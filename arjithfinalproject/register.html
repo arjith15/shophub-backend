@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register | ShopHub</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .auth-main {
+            display:flex; align-items:center; justify-content:center;
+            padding:2rem 1rem 4rem;
+            min-height:calc(100vh - 120px);
+        }
+        .auth-card {
+            width:100%; max-width:480px;
+            background:var(--bg-card);
+            border:1px solid rgba(99,102,241,0.2);
+            border-radius:20px; padding:2.5rem 2rem;
+            box-shadow:0 32px 64px rgba(0,0,0,0.45);
+            animation:authFadeUp 0.45s ease both;
+        }
+        @keyframes authFadeUp {
+            from { opacity:0; transform:translateY(28px); }
+            to   { opacity:1; transform:translateY(0); }
+        }
+        .auth-card-header { text-align:center; margin-bottom:1.5rem; }
+        .auth-icon {
+            width:60px; height:60px;
+            background:linear-gradient(135deg,#ec4899,#8b5cf6);
+            border-radius:18px; display:flex; align-items:center; justify-content:center;
+            font-size:1.6rem; margin:0 auto 1rem;
+            box-shadow:0 8px 28px rgba(139,92,246,0.4);
+        }
+        .auth-card-title { font-size:1.65rem; font-weight:800; color:var(--text-primary); margin-bottom:0.35rem; }
+        .auth-card-sub   { font-size:0.88rem; color:var(--text-secondary); }
+
+        /* Perks */
+        .auth-perks { display:flex; gap:0.45rem; justify-content:center; flex-wrap:wrap; margin-bottom:1.5rem; }
+        .auth-perk {
+            padding:0.22rem 0.7rem;
+            background:rgba(99,102,241,0.1); border:1px solid rgba(99,102,241,0.22);
+            border-radius:20px; font-size:0.72rem; font-weight:600; color:#818cf8;
+        }
+
+        /* Social */
+        .auth-social-row { display:grid; grid-template-columns:1fr 1fr; gap:0.75rem; margin-bottom:1.25rem; }
+        .auth-social-btn {
+            display:flex; align-items:center; justify-content:center; gap:0.5rem;
+            padding:0.65rem 1rem;
+            background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.1);
+            border-radius:10px; color:var(--text-primary);
+            font-size:0.83rem; font-weight:600; cursor:pointer;
+            transition:all 0.2s; font-family:inherit;
+        }
+        .auth-social-btn:hover { background:rgba(255,255,255,0.09); border-color:rgba(99,102,241,0.4); transform:translateY(-1px); }
+        .auth-social-btn svg { width:18px; height:18px; flex-shrink:0; }
+
+        /* Divider */
+        .auth-divider { display:flex; align-items:center; gap:0.75rem; margin:0 0 1.25rem; }
+        .auth-divider::before,.auth-divider::after { content:''; flex:1; height:1px; background:rgba(99,102,241,0.18); }
+        .auth-divider span { font-size:0.74rem; color:var(--text-secondary); white-space:nowrap; }
+
+        /* Form */
+        .auth-form  { display:flex; flex-direction:column; gap:1rem; }
+        .auth-row   { display:grid; grid-template-columns:1fr 1fr; gap:0.75rem; }
+        .auth-field { display:flex; flex-direction:column; gap:0.4rem; }
+        .auth-label { font-size:0.8rem; font-weight:600; color:var(--text-secondary); letter-spacing:0.03em; }
+        .auth-opt   { font-weight:400; color:#475569; }
+
+        .auth-input-wrap { position:relative; }
+        .auth-input-icon {
+            position:absolute; left:0.9rem; top:50%; transform:translateY(-50%);
+            color:#475569; pointer-events:none; font-size:1rem;
+        }
+        .auth-input {
+            width:100%; padding:0.75rem 0.9rem 0.75rem 2.6rem;
+            background:var(--bg-input); border:1.5px solid rgba(99,102,241,0.18);
+            border-radius:10px; color:var(--text-primary);
+            font-size:0.9rem; font-family:inherit;
+            outline:none; transition:border-color 0.2s, box-shadow 0.2s;
+        }
+        .auth-input::placeholder { color:#475569; }
+        .auth-input:focus     { border-color:#6366f1; box-shadow:0 0 0 3px rgba(99,102,241,0.15); }
+        .auth-input.is-error  { border-color:#ef4444; box-shadow:0 0 0 3px rgba(239,68,68,0.12); }
+        .auth-input.is-ok     { border-color:#4ade80; box-shadow:0 0 0 3px rgba(74,222,128,0.1); }
+
+        .auth-pw-toggle {
+            position:absolute; right:0.9rem; top:50%; transform:translateY(-50%);
+            background:none; border:none; color:#475569;
+            cursor:pointer; padding:0; font-size:1rem; transition:color 0.2s;
+        }
+        .auth-pw-toggle:hover { color:var(--primary-light); }
+
+        /* Strength */
+        .pw-strength-bar { display:flex; gap:3px; margin-top:0.45rem; }
+        .pw-seg { flex:1; height:3px; border-radius:2px; background:rgba(255,255,255,0.07); transition:background 0.3s; }
+        .pw-seg.weak   { background:#ef4444; }
+        .pw-seg.fair   { background:#f59e0b; }
+        .pw-seg.good   { background:#6366f1; }
+        .pw-seg.strong { background:#4ade80; }
+        .pw-label { font-size:0.72rem; color:#475569; margin-top:0.3rem; }
+
+        /* Match hint */
+        .field-hint     { font-size:0.72rem; color:#475569; margin-top:0.15rem; }
+        .field-hint.ok  { color:#4ade80; }
+        .field-hint.bad { color:#fca5a5; }
+
+        /* Checkboxes */
+        .auth-check-label {
+            display:flex; align-items:flex-start; gap:0.5rem;
+            cursor:pointer; font-size:0.82rem; color:var(--text-secondary); line-height:1.5;
+        }
+        .auth-check-label input[type="checkbox"] {
+            accent-color:#6366f1; width:15px; height:15px;
+            cursor:pointer; margin-top:2px; flex-shrink:0;
+        }
+        .auth-check-label a { color:var(--primary-light); text-decoration:none; }
+        .auth-check-label a:hover { text-decoration:underline; }
+
+        /* Submit */
+        .auth-submit-btn {
+            width:100%; padding:0.9rem;
+            background:linear-gradient(135deg,#ec4899,#8b5cf6);
+            border:none; border-radius:12px; color:#fff;
+            font-size:0.95rem; font-weight:700; font-family:inherit;
+            cursor:pointer; transition:all 0.25s; letter-spacing:0.03em;
+            margin-top:0.25rem;
+            display:flex; align-items:center; justify-content:center; gap:0.5rem;
+        }
+        .auth-submit-btn:hover:not(:disabled) { transform:translateY(-2px); box-shadow:0 8px 26px rgba(139,92,246,0.5); }
+        .auth-submit-btn:disabled { opacity:0.55; cursor:not-allowed; }
+        .btn-spinner {
+            width:18px; height:18px;
+            border:2px solid rgba(255,255,255,0.3); border-top-color:#fff;
+            border-radius:50%; animation:spin 0.75s linear infinite; display:none;
+        }
+        .auth-submit-btn.loading .btn-text    { display:none; }
+        .auth-submit-btn.loading .btn-spinner { display:block; }
+
+        /* Alert */
+        .auth-alert {
+            padding:0.75rem 1rem; border-radius:10px;
+            font-size:0.83rem; font-weight:600;
+            display:none; align-items:center; gap:0.5rem; margin-bottom:0.5rem;
+        }
+        .auth-alert.show-error   { display:flex; background:rgba(239,68,68,0.12); border:1px solid rgba(239,68,68,0.3); color:#fca5a5; }
+        .auth-alert.show-success { display:flex; background:rgba(74,222,128,0.1); border:1px solid rgba(74,222,128,0.3); color:#4ade80; }
+
+        .auth-footer-link { text-align:center; margin-top:1.5rem; font-size:0.85rem; color:var(--text-secondary); }
+        .auth-footer-link a { color:var(--primary-light); text-decoration:none; font-weight:600; }
+        .auth-footer-link a:hover { color:#fff; text-decoration:underline; }
+
+        .auth-trust {
+            display:flex; align-items:center; justify-content:center;
+            gap:1.25rem; margin-top:1.75rem; padding-top:1.5rem;
+            border-top:1px solid rgba(99,102,241,0.1); flex-wrap:wrap;
+        }
+        .auth-trust-item { font-size:0.72rem; color:#475569; }
+
+        @keyframes spin { to { transform:rotate(360deg); } }
+        @media (max-width:500px) {
+            .auth-card { padding:2rem 1.25rem; }
+            .auth-row  { grid-template-columns:1fr; }
+            .auth-social-row { grid-template-columns:1fr; }
+        }
+    </style>
+</head>
+<body>
+
+<header class="site-header">
+    <div class="header-inner">
+        <a href="index.html" class="logo-link"><h1 class="logo">ShopHub</h1></a>
+    </div>
+    <p class="tagline">Create your free account</p>
+</header>
+
+<main class="auth-main">
+    <div class="auth-card">
+
+        <div class="auth-card-header">
+            <div class="auth-icon">🛍️</div>
+            <h2 class="auth-card-title">Join ShopHub Today</h2>
+            <p class="auth-card-sub">Create your account and start shopping smarter</p>
+        </div>
+
+        <div class="auth-perks">
+            <span class="auth-perk">🎁 Exclusive Deals</span>
+            <span class="auth-perk">🤖 AI Outfit Studio</span>
+            <span class="auth-perk">🚚 Free Shipping</span>
+            <span class="auth-perk">💬 Live Support</span>
+        </div>
+
+        <div class="auth-alert" id="authAlert"></div>
+
+        <!-- Social -->
+        <div class="auth-social-row">
+            <button class="auth-social-btn" onclick="socialLogin('Google')">
+                <svg viewBox="0 0 24 24" fill="none">
+                    <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
+                    <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
+                    <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z" fill="#FBBC05"/>
+                    <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/>
+                </svg>
+                Google
+            </button>
+            <button class="auth-social-btn" onclick="socialLogin('GitHub')">
+                <svg viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/>
+                </svg>
+                GitHub
+            </button>
+        </div>
+
+        <div class="auth-divider"><span>or register with email</span></div>
+
+        <form class="auth-form" id="registerForm" onsubmit="handleRegister(event)" novalidate>
+
+            <div class="auth-row">
+                <div class="auth-field">
+                    <label class="auth-label" for="regFirst">First Name</label>
+                    <div class="auth-input-wrap">
+                        <span class="auth-input-icon">👤</span>
+                        <input type="text" id="regFirst" class="auth-input" placeholder="John" autocomplete="given-name" required />
+                    </div>
+                </div>
+                <div class="auth-field">
+                    <label class="auth-label" for="regLast">Last Name</label>
+                    <div class="auth-input-wrap">
+                        <span class="auth-input-icon">👤</span>
+                        <input type="text" id="regLast" class="auth-input" placeholder="Doe" autocomplete="family-name" required />
+                    </div>
+                </div>
+            </div>
+
+            <div class="auth-field">
+                <label class="auth-label" for="regEmail">Email Address</label>
+                <div class="auth-input-wrap">
+                    <span class="auth-input-icon">✉️</span>
+                    <input type="email" id="regEmail" class="auth-input" placeholder="you@example.com" autocomplete="email" required />
+                </div>
+            </div>
+
+            <div class="auth-field">
+                <label class="auth-label" for="regPhone">Phone <span class="auth-opt">(optional)</span></label>
+                <div class="auth-input-wrap">
+                    <span class="auth-input-icon">📱</span>
+                    <input type="tel" id="regPhone" class="auth-input" placeholder="+91 98765 43210" autocomplete="tel" />
+                </div>
+            </div>
+
+            <div class="auth-field">
+                <label class="auth-label" for="regPassword">Password</label>
+                <div class="auth-input-wrap">
+                    <span class="auth-input-icon">🔒</span>
+                    <input type="password" id="regPassword" class="auth-input"
+                           placeholder="Create a strong password" autocomplete="new-password"
+                           oninput="updateStrength(this.value)" required />
+                    <button type="button" class="auth-pw-toggle" id="pwToggle1">👁️</button>
+                </div>
+                <div class="pw-strength-bar">
+                    <div class="pw-seg" id="seg1"></div>
+                    <div class="pw-seg" id="seg2"></div>
+                    <div class="pw-seg" id="seg3"></div>
+                    <div class="pw-seg" id="seg4"></div>
+                </div>
+                <div class="pw-label" id="pwLabel">Enter a password</div>
+            </div>
+
+            <div class="auth-field">
+                <label class="auth-label" for="regConfirm">Confirm Password</label>
+                <div class="auth-input-wrap">
+                    <span class="auth-input-icon">🔑</span>
+                    <input type="password" id="regConfirm" class="auth-input"
+                           placeholder="Repeat your password" autocomplete="new-password"
+                           oninput="checkMatch()" required />
+                    <button type="button" class="auth-pw-toggle" id="pwToggle2">👁️</button>
+                </div>
+                <div class="field-hint" id="matchHint"></div>
+            </div>
+
+            <label class="auth-check-label">
+                <input type="checkbox" id="agreeTerms" required />
+                I agree to the <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a>
+            </label>
+
+            <label class="auth-check-label">
+                <input type="checkbox" id="newsletter" checked />
+                Email me deals, new arrivals &amp; style tips
+            </label>
+
+            <button type="submit" class="auth-submit-btn" id="registerBtn">
+                <span class="btn-text">Create My Account 🚀</span>
+                <div class="btn-spinner"></div>
+            </button>
+
+        </form>
+
+        <p class="auth-footer-link">
+            Already have an account? <a href="login.html">Sign in instead</a>
+        </p>
+
+        <div class="auth-trust">
+            <span class="auth-trust-item">🔒 SSL Secured</span>
+            <span class="auth-trust-item">🛡️ No Spam</span>
+            <span class="auth-trust-item">✅ Free Forever</span>
+        </div>
+
+    </div>
+</main>
+
+<script>
+    const AUTH_API = 'http://localhost:8080/api/auth';
+
+    // ── Already logged in → go to store ─────────────────────────
+    (function () {
+        const token = localStorage.getItem('shopHubToken') || sessionStorage.getItem('shopHubToken');
+        if (token) window.location.href = 'index.html';
+    })();
+
+    // ── Password toggles ─────────────────────────────────────────
+    function setupToggle(btnId, inputId) {
+        document.getElementById(btnId).addEventListener('click', function () {
+            const inp = document.getElementById(inputId);
+            inp.type = inp.type === 'password' ? 'text' : 'password';
+            this.textContent = inp.type === 'password' ? '👁️' : '🙈';
+        });
+    }
+    setupToggle('pwToggle1', 'regPassword');
+    setupToggle('pwToggle2', 'regConfirm');
+
+    // ── Alert helpers ────────────────────────────────────────────
+    function showAlert(msg, type = 'error') {
+        const el = document.getElementById('authAlert');
+        el.textContent = (type === 'error' ? '⚠️ ' : '✅ ') + msg;
+        el.className = 'auth-alert ' + (type === 'error' ? 'show-error' : 'show-success');
+        el.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
+    function hideAlert() { document.getElementById('authAlert').className = 'auth-alert'; }
+
+    function socialLogin(name) {
+        showAlert(name + ' signup is not configured yet.');
+    }
+
+    // ── Password strength ────────────────────────────────────────
+    function updateStrength(val) {
+        let score = 0;
+        if (val.length >= 8)          score++;
+        if (/[A-Z]/.test(val))        score++;
+        if (/[0-9]/.test(val))        score++;
+        if (/[^A-Za-z0-9]/.test(val)) score++;
+
+        const cls    = ['','weak','fair','good','strong'];
+        const labels = ['Enter a password','Weak — add more characters','Fair — try uppercase & numbers','Good — add a symbol','Strong 💪'];
+        const colors = ['#475569','#ef4444','#f59e0b','#6366f1','#4ade80'];
+
+        ['seg1','seg2','seg3','seg4'].forEach((id, i) => {
+            const el = document.getElementById(id);
+            el.className = 'pw-seg';
+            if (i < score) el.classList.add(cls[score]);
+        });
+        const lbl = document.getElementById('pwLabel');
+        lbl.textContent = val.length === 0 ? labels[0] : labels[score];
+        lbl.style.color = val.length === 0 ? colors[0] : colors[score];
+
+        if (document.getElementById('regConfirm').value) checkMatch();
+    }
+
+    // ── Confirm match ────────────────────────────────────────────
+    function checkMatch() {
+        const pw    = document.getElementById('regPassword').value;
+        const cfm   = document.getElementById('regConfirm').value;
+        const hint  = document.getElementById('matchHint');
+        const input = document.getElementById('regConfirm');
+        if (!cfm) { hint.textContent = ''; input.className = 'auth-input'; return; }
+        if (pw === cfm) {
+            hint.textContent = '✅ Passwords match';
+            hint.className = 'field-hint ok';
+            input.className = 'auth-input is-ok';
+        } else {
+            hint.textContent = '❌ Passwords do not match';
+            hint.className = 'field-hint bad';
+            input.className = 'auth-input is-error';
+        }
+    }
+
+    // ── Register → calls Spring Boot POST /api/auth/register ─────
+    async function handleRegister(e) {
+        e.preventDefault();
+        hideAlert();
+
+        const firstName  = document.getElementById('regFirst').value.trim();
+        const lastName   = document.getElementById('regLast').value.trim();
+        const email      = document.getElementById('regEmail').value.trim().toLowerCase();
+        const phone      = document.getElementById('regPhone').value.trim();
+        const password   = document.getElementById('regPassword').value;
+        const confirm    = document.getElementById('regConfirm').value;
+        const newsletter = document.getElementById('newsletter').checked;
+        const btn        = document.getElementById('registerBtn');
+
+        // Frontend validation
+        if (!firstName || !lastName)   { showAlert('Please enter your full name.'); return; }
+        if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+            showAlert('Please enter a valid email address.');
+            document.getElementById('regEmail').classList.add('is-error');
+            return;
+        }
+        if (password.length < 8)       { showAlert('Password must be at least 8 characters.'); return; }
+        if (password !== confirm)       { showAlert('Passwords do not match.'); return; }
+        if (!document.getElementById('agreeTerms').checked) {
+            showAlert('Please accept the Terms of Service to continue.');
+            return;
+        }
+
+        btn.disabled = true;
+        btn.classList.add('loading');
+
+        try {
+            const res  = await fetch(`${AUTH_API}/register`, {
+                method:  'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body:    JSON.stringify({ firstName, lastName, email, phone, password, newsletter })
+            });
+
+            const data = await res.json();
+
+            if (res.ok && data.success) {
+                // ── Auto-login with returned token ───────────────
+                localStorage.setItem('shopHubToken', data.data.token);
+                localStorage.setItem('shopHubUser',  JSON.stringify({
+                    id:        data.data.user.id,
+                    firstName: data.data.user.firstName,
+                    lastName:  data.data.user.lastName,
+                    email:     data.data.user.email,
+                    phone:     data.data.user.phone || ''
+                }));
+
+                if (data.data.sessionId) {
+                    localStorage.setItem('shopHubSessionId', data.data.sessionId);
+                }
+
+                showAlert('Account created! Redirecting you to the store…', 'success');
+                setTimeout(() => { window.location.href = 'index.html'; }, 1100);
+
+            } else {
+                // e.g. 409 email already exists
+                showAlert(data.message || 'Registration failed. Please try again.');
+                if (data.message?.toLowerCase().includes('email')) {
+                    document.getElementById('regEmail').classList.add('is-error');
+                }
+            }
+
+        } catch (err) {
+            console.error('Register error:', err);
+            showAlert('Cannot reach the server. Is Spring Boot running on port 8080?');
+        }
+
+        btn.disabled = false;
+        btn.classList.remove('loading');
+    }
+
+    // ── Clear error styles on re-type ────────────────────────────
+    ['regFirst','regLast','regEmail'].forEach(id => {
+        document.getElementById(id).addEventListener('input', function () {
+            this.classList.remove('is-error');
+            hideAlert();
+        });
+    });
+</script>
+</body>
+</html>

@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment | ShopHub</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header class="site-header">
+        <div class="header-inner">
+            <a href="index.html" class="logo-link">
+                <h1 class="logo">ShopHub</h1>
+            </a>
+        </div>
+        <p class="tagline">Secure Payment</p>
+    </header>
+
+    <main class="payment-main">
+        <div class="payment-container">
+            <a href="index.html" class="back-link">&larr; Back to Store</a>
+
+            <div id="paymentContent" class="payment-content">
+                <!-- Order summary and form loaded by JS -->
+            </div>
+
+            <div id="emptyState" class="payment-empty" style="display: none;">
+                <p>No items in your order. <a href="index.html">Continue shopping</a></p>
+            </div>
+        </div>
+    </main>
+
+    <script src="payment.js"></script>
+</body>
+</html>

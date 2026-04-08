@@ -1,0 +1,756 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ShopHub | 100+ Products</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .ad-banner-hero { background: linear-gradient(135deg,#6366f1,#ec4899); border-radius:16px; padding:2.5rem 2rem; margin-bottom:2.5rem; display:flex; align-items:center; justify-content:space-between; gap:1.5rem; overflow:hidden; position:relative; }
+        .ad-banner-hero::before { content:''; position:absolute; top:-60px; right:-60px; width:220px; height:220px; background:rgba(255,255,255,.07); border-radius:50%; }
+        .ad-hero-text { position:relative; z-index:1; }
+        .ad-hero-text h2 { font-size:2rem; font-weight:800; color:white; margin-bottom:.5rem; }
+        .ad-hero-text p { color:rgba(255,255,255,.88); font-size:1.05rem; margin-bottom:1.25rem; line-height:1.5; }
+        .ad-hero-badge { display:inline-block; background:rgba(255,255,255,.2); border:1px solid rgba(255,255,255,.4); color:white; padding:.3rem .9rem; border-radius:20px; font-size:.8rem; font-weight:600; margin-bottom:1rem; }
+        .ad-hero-cta { display:inline-block; background:white; color:#6366f1; font-weight:700; padding:.8rem 1.8rem; border-radius:10px; font-size:1rem; cursor:pointer; border:none; transition:transform .2s,box-shadow .2s; }
+        .ad-hero-cta:hover { transform:scale(1.04); box-shadow:0 6px 20px rgba(0,0,0,.25); }
+        .ad-hero-emoji { font-size:5.5rem; opacity:.9; user-select:none; position:relative; z-index:1; }
+        .ad-ticker { background:linear-gradient(90deg,#1e293b,#334155,#1e293b); border:1px solid rgba(255,255,255,.08); border-radius:10px; padding:.65rem 0; margin-bottom:2rem; overflow:hidden; white-space:nowrap; }
+        .ad-ticker-inner { display:inline-block; animation:ticker 35s linear infinite; color:#94a3b8; font-size:.9rem; padding-left:100%; }
+        .ad-ticker-inner span { color:#818cf8; font-weight:700; margin:0 .5rem; }
+        @keyframes ticker { 0%{transform:translateX(0)} 100%{transform:translateX(-100%)} }
+        .ad-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:1rem; margin-bottom:2.5rem; }
+        .ad-card { border-radius:14px; padding:1.5rem; display:flex; align-items:center; gap:1rem; position:relative; overflow:hidden; cursor:pointer; transition:transform .2s,box-shadow .2s; }
+        .ad-card:hover { transform:translateY(-4px); box-shadow:0 14px 35px rgba(0,0,0,.35); }
+        .ad-card-1 { background:linear-gradient(135deg,#1e293b,#0f172a); border:1px solid #6366f1; }
+        .ad-card-2 { background:linear-gradient(135deg,#1e293b,#0f172a); border:1px solid #ec4899; }
+        .ad-card-3 { background:linear-gradient(135deg,#1e293b,#0f172a); border:1px solid #22c55e; }
+        .ad-card-emoji { font-size:2.8rem; flex-shrink:0; }
+        .ad-card-body h3 { font-size:1rem; font-weight:700; color:#f8fafc; margin-bottom:.3rem; }
+        .ad-card-body p { font-size:.82rem; color:#94a3b8; line-height:1.4; }
+        .ad-card-tag { position:absolute; top:10px; right:12px; font-size:.68rem; font-weight:700; padding:.2rem .6rem; border-radius:20px; text-transform:uppercase; }
+        .ad-card-1 .ad-card-tag { background:rgba(99,102,241,.2); color:#818cf8; border:1px solid rgba(99,102,241,.5); }
+        .ad-card-2 .ad-card-tag { background:rgba(236,72,153,.2); color:#f472b6; border:1px solid rgba(236,72,153,.5); }
+        .ad-card-3 .ad-card-tag { background:rgba(34,197,94,.2); color:#4ade80; border:1px solid rgba(34,197,94,.5); }
+        .ad-mid-banner { background:linear-gradient(135deg,#0f172a,#1e1b4b,#0f172a); border:1px solid rgba(99,102,241,.35); border-radius:14px; padding:1.75rem 2rem; margin:2.5rem 0; display:flex; align-items:center; justify-content:space-between; gap:1.5rem; flex-wrap:wrap; }
+        .ad-mid-left h3 { font-size:1.2rem; font-weight:700; color:#f8fafc; margin-bottom:.3rem; }
+        .ad-mid-left p { color:#94a3b8; font-size:.9rem; }
+        .ad-mid-badges { display:flex; gap:.5rem; flex-wrap:wrap; margin-top:.6rem; }
+        .ad-badge { padding:.25rem .75rem; border-radius:20px; font-size:.75rem; font-weight:600; background:rgba(99,102,241,.15); color:#818cf8; border:1px solid rgba(99,102,241,.3); }
+        .ad-mid-cta { padding:.7rem 1.6rem; background:linear-gradient(135deg,#6366f1,#8b5cf6); border:none; border-radius:10px; color:white; font-weight:700; cursor:pointer; font-size:.9rem; transition:transform .2s,box-shadow .2s; white-space:nowrap; flex-shrink:0; }
+        .ad-mid-cta:hover { transform:scale(1.04); box-shadow:0 4px 20px rgba(99,102,241,.4); }
+        .category-nav { display:flex; gap:.5rem; flex-wrap:wrap; margin-bottom:1.5rem; }
+        .cat-pill { padding:.4rem 1rem; background:rgba(99,102,241,.15); border:1px solid rgba(99,102,241,.3); border-radius:20px; color:#818cf8; font-size:.85rem; font-weight:600; cursor:pointer; transition:background .2s,transform .2s; text-decoration:none; }
+        .cat-pill:hover { background:rgba(99,102,241,.35); transform:scale(1.03); }
+        .active-cat { background:rgba(99,102,241,.45) !important; border-color:#6366f1 !important; color:#e0e7ff !important; }
+
+        /* ── Product image hover overlay ── */
+        .product-image-wrap { position:relative; overflow:hidden; }
+        .product-view-overlay {
+            position:absolute; inset:0; background:rgba(99,102,241,.7);
+            display:flex; align-items:center; justify-content:center;
+            color:white; font-weight:700; font-size:.9rem;
+            opacity:0; transition:opacity .2s;
+        }
+        .product-image-wrap:hover .product-view-overlay { opacity:1; }
+
+        /* ── Filter Bar ── */
+        .filter-bar { background:rgba(15,23,42,.7); border:1px solid rgba(99,102,241,.2); border-radius:14px; padding:1rem 1.25rem; margin-bottom:1.25rem; display:flex; flex-wrap:wrap; gap:.75rem; align-items:center; }
+        .filter-dropdowns { display:flex; flex-wrap:wrap; gap:.6rem; flex:1; }
+        .filter-select {
+            background:#1e293b; border:1.5px solid rgba(99,102,241,.3); color:#c7d2fe;
+            padding:.45rem .9rem; border-radius:8px; font-size:.82rem; font-weight:600;
+            cursor:pointer; outline:none; transition:border-color .2s;
+        }
+        .filter-select:focus, .filter-select:hover { border-color:#6366f1; }
+        .filter-reset-btn {
+            background:rgba(239,68,68,.15); border:1px solid rgba(239,68,68,.4); color:#fca5a5;
+            padding:.4rem .9rem; border-radius:8px; font-size:.8rem; font-weight:600;
+            cursor:pointer; white-space:nowrap; transition:all .2s;
+        }
+        .filter-reset-btn:hover { background:rgba(239,68,68,.3); }
+        .active-filters { display:flex; flex-wrap:wrap; gap:.4rem; margin-bottom:.75rem; min-height:0; }
+        .filter-tag {
+            background:rgba(99,102,241,.2); border:1px solid rgba(99,102,241,.4); color:#c7d2fe;
+            padding:.25rem .75rem; border-radius:20px; font-size:.78rem; font-weight:600;
+            display:flex; align-items:center; gap:.4rem;
+        }
+        .filter-tag-remove { cursor:pointer; color:#818cf8; font-size:.95rem; line-height:1; }
+        .filter-tag-remove:hover { color:#e0e7ff; }
+
+        /* ── Product variant selectors on card ── */
+        .product-variants { padding:.4rem .75rem .5rem; display:flex; flex-direction:column; gap:.35rem; }
+        .variant-row { display:flex; align-items:center; gap:.4rem; flex-wrap:wrap; }
+        .variant-label { font-size:.7rem; color:#64748b; font-weight:600; min-width:44px; }
+        .variant-pills { display:flex; gap:.3rem; flex-wrap:wrap; }
+        .variant-pill {
+            padding:.15rem .5rem; border-radius:6px; font-size:.7rem; font-weight:600;
+            border:1px solid rgba(99,102,241,.3); background:rgba(99,102,241,.08); color:#94a3b8;
+            cursor:pointer; transition:all .15s;
+        }
+        .variant-pill.selected { background:rgba(99,102,241,.35); border-color:#6366f1; color:#c7d2fe; }
+        .variant-pill:hover { border-color:#818cf8; color:#c7d2fe; }
+        @media(max-width:600px){ .ad-banner-hero{flex-direction:column;text-align:center} .ad-hero-emoji{font-size:3.5rem} .ad-hero-text h2{font-size:1.5rem} .ad-mid-banner{flex-direction:column;text-align:center} .ad-mid-badges{justify-content:center} }
+
+        /* ── Search Bar ── */
+        .search-bar-wrap { display:flex; gap:.6rem; max-width:600px; margin:.75rem auto 0; align-items:center; }
+        .search-input-wrap { position:relative; flex:1; }
+        .search-input-wrap .search-icon { position:absolute; left:14px; top:50%; transform:translateY(-50%); width:18px; height:18px; stroke:#64748b; pointer-events:none; }
+        .search-input {
+            width:100%; padding:.75rem 2.5rem .75rem 2.6rem;
+            background:#1e293b; border:1.5px solid rgba(99,102,241,.3);
+            border-radius:12px; color:#f1f5f9; font-size:.97rem;
+            outline:none; transition:border-color .2s,box-shadow .2s; box-sizing:border-box;
+        }
+        .search-input::placeholder { color:#475569; }
+        .search-input:focus { border-color:#6366f1; box-shadow:0 0 0 3px rgba(99,102,241,.18); }
+        .search-clear-btn {
+            position:absolute; right:10px; top:50%; transform:translateY(-50%);
+            background:none; border:none; color:#64748b; font-size:1.3rem;
+            cursor:pointer; display:none; padding:2px 6px; line-height:1;
+        }
+        .search-clear-btn:hover { color:#f1f5f9; }
+        .search-btn {
+            padding:.75rem 1.4rem; background:linear-gradient(135deg,#6366f1,#8b5cf6);
+            border:none; border-radius:12px; color:white; font-weight:700;
+            font-size:.95rem; cursor:pointer; white-space:nowrap;
+            transition:transform .15s, box-shadow .15s; flex-shrink:0;
+        }
+        .search-btn:hover { transform:scale(1.04); box-shadow:0 4px 18px rgba(99,102,241,.45); }
+        .search-results-info { text-align:center; color:#64748b; font-size:.85rem; margin:.6rem 0 1.2rem; min-height:1.3em; }
+        .search-results-info span { color:#818cf8; font-weight:600; }
+        .no-results { text-align:center; padding:3rem 1rem; color:#475569; display:none; }
+        .no-results-emoji { font-size:3rem; display:block; margin-bottom:.75rem; }
+    </style>
+</head>
+<body>
+    <header class="site-header">
+        <div class="header-inner">
+            <div id="authHeaderArea" style="position:absolute; left:1rem; top:50%; transform:translateY(-50%); display:flex; align-items:center; gap:0.5rem;">
+
+    <!-- Shown when NOT logged in -->
+    <a href="login.html" id="loginHeaderBtn"
+       style="padding:0.38rem 1rem; background:rgba(99,102,241,0.18);
+              border:1px solid rgba(99,102,241,0.35); border-radius:20px;
+              color:#818cf8; font-size:0.82rem; font-weight:600; text-decoration:none;
+              transition:all 0.2s;">
+        Sign In
+    </a>
+
+    <!-- Shown when logged in -->
+    <span id="userGreeting"
+          style="display:none; padding:0.38rem 1rem;
+                 background:rgba(74,222,128,0.08);
+                 border:1px solid rgba(74,222,128,0.28); border-radius:20px;
+                 color:#4ade80; font-size:0.82rem; font-weight:600;">
+    </span>
+    <button id="logoutBtn" onclick="logoutUser()"
+            style="display:none; padding:0.38rem 1rem;
+                   background:rgba(239,68,68,0.08);
+                   border:1px solid rgba(239,68,68,0.28); border-radius:20px;
+                   color:#fca5a5; font-size:0.82rem; font-weight:600;
+                   cursor:pointer; font-family:inherit; transition:all 0.2s;">
+        Logout
+    </button>
+</div>
+
+            <h1 class="logo">ShopHub</h1>
+            <button class="ai-outfit-nav-btn" onclick="openOutfitStudio()" title="AI Outfit Recommendations">
+                ✨ AI Outfit
+            </button>
+            <button class="cart-header-btn" id="cartHeaderBtn" aria-label="Open cart">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/>
+                    <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/>
+                </svg>
+                <span class="cart-badge" id="cartBadge">0</span>
+            </button>
+        </div>
+        <p class="tagline">Your one-stop online store — 100+ products</p>
+        <div class="search-bar-wrap">
+            <div class="search-input-wrap">
+                <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+                </svg>
+                <input type="text" id="searchInput" class="search-input" placeholder="Search products... e.g. dress, keyboard" autocomplete="off" translate="no" lang="en" spellcheck="false">
+                <button class="search-clear-btn" id="searchClearBtn" title="Clear">&times;</button>
+            </div>
+            <button class="search-btn" id="searchBtn">🔍 Search</button>
+        </div>
+        <p class="search-results-info" id="searchResultsInfo"></p>
+    </header>
+
+    <div class="cart-overlay" id="cartOverlay"></div>
+    <div class="cart-sidebar" id="cartSidebar">
+        <div class="cart-header">
+            <h2>Your Cart</h2>
+            <button class="cart-close" id="cartClose" aria-label="Close cart">&times;</button>
+        </div>
+        <div class="cart-items" id="cartItems">
+            <p class="cart-empty" id="cartEmpty">Your cart is empty</p>
+        </div>
+        <div class="cart-footer" id="cartFooter">
+            <div class="cart-total"><span>Total:</span><strong id="cartTotal">$0.00</strong></div>
+            <button class="checkout-btn" id="checkoutBtn">Checkout</button>
+        </div>
+    </div>
+
+    <main class="main-content">
+        <!-- HERO AD -->
+        <div class="ad-banner-hero">
+            <div class="ad-hero-text">
+                <span class="ad-hero-badge">🔥 LIMITED TIME OFFER</span>
+                <h2>Mega Sale — Up to 50% Off!</h2>
+                <p>Shop electronics, fashion, gaming &amp; more.<br>Free shipping on orders over $49.</p>
+                <button class="ad-hero-cta" onclick="document.getElementById('productList').scrollIntoView({behavior:'smooth'})">Shop Now →</button>
+            </div>
+            <div class="ad-hero-emoji">🛍️</div>
+        </div>
+
+        <!-- TICKER -->
+        <div class="ad-ticker">
+            <div class="ad-ticker-inner">
+                🔥 <span>NEW ARRIVALS</span> Gaming Chairs, Drones &amp; More &nbsp;|&nbsp; 💳 <span>FREE SHIPPING</span> on orders over $49 &nbsp;|&nbsp; ⚡ <span>FLASH DEAL</span> Wireless Headphones $149.99 &nbsp;|&nbsp; 👗 <span>FASHION WEEK</span> 30% off all dresses &nbsp;|&nbsp; 🎮 <span>GAMER BUNDLE</span> Keyboard + Mouse + Headset &nbsp;|&nbsp; 📱 <span>TECH SALE</span> Smartwatches from $199 &nbsp;|&nbsp; 🏠 <span>HOME DEALS</span> Kitchen Essentials from $19 &nbsp;|&nbsp; ✨ <span>FITNESS</span> Gear from $14.99
+            </div>
+        </div>
+
+        <!-- 3 AD CARDS -->
+        <div class="ad-grid">
+            <div class="ad-card ad-card-1" onclick="filterByCategory('electronics', null); document.getElementById('productList').scrollIntoView({behavior:'smooth'})">
+                <div class="ad-card-emoji">📱</div>
+                <div class="ad-card-body"><h3>Tech Deals This Week</h3><p>iPhones, Samsung, OnePlus, Laptops at unbeatable prices.</p></div>
+                <span class="ad-card-tag">Electronics</span>
+            </div>
+            <div class="ad-card ad-card-2" onclick="filterByCategory('dress', null); document.getElementById('productList').scrollIntoView({behavior:'smooth'})">
+                <div class="ad-card-emoji">👗</div>
+                <div class="ad-card-body"><h3>Fashion Sale</h3><p>Zara, Mango, H&amp;M — Summer Dresses, Evening Gowns up to 30% off.</p></div>
+                <span class="ad-card-tag">Fashion</span>
+            </div>
+            <div class="ad-card ad-card-3" onclick="filterByCategory('shoes', null); document.getElementById('productList').scrollIntoView({behavior:'smooth'})">
+                <div class="ad-card-emoji">👟</div>
+                <div class="ad-card-body"><h3>Top Branded Shoes</h3><p>Nike, Adidas, Puma, Reebok &amp; more — find your perfect fit.</p></div>
+                <span class="ad-card-tag">Shoes</span>
+            </div>
+        </div>
+
+        <!-- AI OUTFIT PROMO BANNER -->
+        <div class="ai-outfit-banner" onclick="openOutfitStudio()">
+            <div class="ai-banner-glow"></div>
+            <div class="ai-banner-left">
+                <span class="ai-banner-badge">✦ NEW</span>
+                <h3>AI Outfit Recommendations</h3>
+                <p>Upload your photo · Choose body type · Get personalized outfit picks curated just for you</p>
+                <div class="ai-banner-steps">
+                    <span>📷 Upload Photo</span>
+                    <span class="ai-step-arrow">→</span>
+                    <span>🧍 Body Type</span>
+                    <span class="ai-step-arrow">→</span>
+                    <span>✨ Get Outfits</span>
+                </div>
+            </div>
+            <button class="ai-banner-cta">Try AI Styling →</button>
+        </div>
+
+        <!-- PRODUCTS -->
+        <section class="products-section">
+            <h2 class="section-title">Our Products</h2>
+            <p class="section-subtitle">Browse 150+ branded products</p>
+
+            <!-- Category Pills -->
+            <div class="category-nav" id="categoryNav">
+                <a class="cat-pill active-cat" onclick="filterByCategory('all',this)">🛍️ All</a>
+                <a class="cat-pill" onclick="filterByCategory('dress',this)">👗 Dress</a>
+                <a class="cat-pill" onclick="filterByCategory('shoes',this)">👟 Shoes</a>
+                <a class="cat-pill" onclick="filterByCategory('mobiles',this)">📱 Mobiles</a>
+                <a class="cat-pill" onclick="filterByCategory('laptops',this)">💻 Laptops</a>
+                <a class="cat-pill" onclick="filterByCategory('electronics',this)">🎧 Electronics</a>
+                <a class="cat-pill" onclick="filterByCategory('lifestyle',this)">✨ Lifestyle</a>
+                <a class="cat-pill" onclick="filterByCategory('gaming',this)">🎮 Gaming</a>
+                <a class="cat-pill" onclick="filterByCategory('other',this)">🏠 Home &amp; Kitchen</a>
+            </div>
+
+            <!-- Filter Bar -->
+            <div class="filter-bar" id="filterBar">
+                <div class="filter-chips" id="filterChips"></div>
+                <div class="filter-dropdowns" id="filterDropdowns">
+                    <!-- Rendered by JS based on active category -->
+                </div>
+                <button class="filter-reset-btn" id="filterResetBtn" style="display:none" onclick="resetAllFilters()">✕ Clear Filters</button>
+            </div>
+
+            <!-- Active filter tags -->
+            <div class="active-filters" id="activeFilters"></div>
+
+            <div class="products-layout">
+                <div id="productList" class="product-grid"></div>
+            </div>
+            <div class="no-results" id="noResults">
+                <span class="no-results-emoji">🔍</span>
+                <p>No products found for <strong id="noResultsQuery"></strong></p>
+                <p style="font-size:.85rem;margin-top:.4rem;">Try adjusting your filters or search term</p>
+            </div>
+        </section>
+
+        <!-- MID AD -->
+        <div class="ad-mid-banner">
+            <div class="ad-mid-left">
+                <h3>🎁 Join ShopHub Premium &amp; Save More</h3>
+                <p>Exclusive early access, member-only discounts, and free returns on every order.</p>
+                <div class="ad-mid-badges">
+                    <span class="ad-badge">✅ Free Shipping</span>
+                    <span class="ad-badge">✅ Early Access</span>
+                    <span class="ad-badge">✅ Free Returns</span>
+                    <span class="ad-badge">✅ Price Alerts</span>
+                </div>
+            </div>
+            <button class="ad-mid-cta" onclick="openChatbot()">Learn More via Chat</button>
+        </div>
+
+        <!-- SUPPORT -->
+        <section class="support-section">
+            <div class="support-card">
+                <h2>Have a Query?</h2>
+                <p class="support-message">For any questions about products or support — <strong>use the chatbot only</strong>.</p>
+                <p class="support-note">No email or phone. Chatbot is your only support option.</p>
+                <button class="open-chat-btn" id="openChatBtn">
+                    <span>Open Chatbot</span>
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
+                </button>
+            </div>
+        </section>
+    </main>
+
+    <button class="chat-toggle" id="chatToggle" aria-label="Open chat">
+        <svg class="chat-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
+    </button>
+
+    <div class="chatbot-container" id="chatbotContainer">
+        <div class="chat-header">
+            <div class="chat-header-content">
+                <div class="chat-avatar"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08-1.29 1.94-3.5 3.22-6 3.22z"/></svg></div>
+                <div class="chat-header-text"><h2>Product Support</h2><span class="chat-status">Online • Ask how to use any product</span></div>
+            </div>
+            <button class="chat-close" id="chatClose"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg></button>
+        </div>
+        <div class="chat-messages" id="chatMessages">
+            <div class="message bot-message">
+                <div class="message-avatar">AI</div>
+                <div class="message-content"><p>Hi! I'm your product support assistant. Type any product name and I'll tell you how to use it!</p></div>
+            </div>
+        </div>
+        <div class="chat-quick-actions" id="chatQuickActions">
+            <span class="quick-label">Quick ask:</span>
+            <div class="quick-buttons" id="quickButtons"></div>
+        </div>
+        <div class="chat-input-area">
+            <input type="text" id="chatInput" class="chat-input" placeholder="Enter product name..." autocomplete="off">
+            <button class="chat-send" id="chatSend"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg></button>
+        </div>
+    </div>
+
+    <div class="price-modal" id="priceModal">
+        <div class="price-modal-content">
+            <div class="price-modal-header">
+                <h3 id="priceModalTitle">Price History</h3>
+                <button class="price-modal-close" id="priceModalClose">&times;</button>
+            </div>
+            <div class="price-modal-body"><canvas id="priceChartCanvas"></canvas></div>
+        </div>
+    </div>
+
+    <!-- ── PRODUCT DETAIL MODAL ─────────────────────────────── -->
+    <div class="pd-overlay" id="pdOverlay"></div>
+    <div class="pd-modal" id="pdModal">
+        <button class="pd-close" id="pdClose">&times;</button>
+        <div class="pd-inner">
+
+            <!-- LEFT: image gallery -->
+            <div class="pd-gallery">
+                <div class="pd-main-img-wrap">
+                    <img id="pdMainImg" src="" alt="" class="pd-main-img">
+                </div>
+                <div class="pd-thumbs" id="pdThumbs"></div>
+            </div>
+
+            <!-- RIGHT: info -->
+            <div class="pd-info">
+                <span class="pd-brand-tag" id="pdBrand"></span>
+                <h2 class="pd-title" id="pdTitle"></h2>
+                <div class="pd-rating" id="pdRating"></div>
+                <p class="pd-price" id="pdPrice"></p>
+
+                <!-- Variants -->
+                <div id="pdVariants"></div>
+
+                <!-- Features / Specs -->
+                <div class="pd-section" id="pdFeaturesSection">
+                    <h4 class="pd-section-title">✨ Key Features</h4>
+                    <ul class="pd-features" id="pdFeatures"></ul>
+                </div>
+
+                <!-- Actions -->
+                <div class="pd-actions">
+                    <button class="pd-add-cart" id="pdAddCart">🛒 Add to Cart</button>
+                    <button class="pd-buy-now" id="pdBuyNow">⚡ Buy Now</button>
+                </div>
+                <button class="pd-compare-btn" id="pdCompareBtn">⚖️ Add to Compare</button>
+            </div>
+        </div>
+
+        <!-- Reviews -->
+        <div class="pd-reviews-section">
+            <h3 class="pd-reviews-title">⭐ Customer Reviews</h3>
+            <div class="pd-reviews-grid" id="pdReviews"></div>
+        </div>
+    </div>
+
+    <style>
+        /* ── Product Detail Modal ─────────────────────────────── */
+        .pd-overlay { position:fixed; inset:0; background:rgba(0,0,0,.7); z-index:1100; display:none; backdrop-filter:blur(4px); }
+        .pd-overlay.open { display:block; }
+        .pd-modal {
+            position:fixed; top:50%; left:50%; transform:translate(-50%,-50%) scale(.96);
+            width:min(96vw,1000px); max-height:90vh; overflow-y:auto;
+            background:#0f172a; border:1px solid rgba(99,102,241,.3);
+            border-radius:20px; z-index:1101; padding:2rem;
+            transition:transform .25s, opacity .25s; opacity:0; pointer-events:none;
+            scrollbar-width:thin; scrollbar-color:#334155 transparent;
+        }
+        .pd-modal.open { transform:translate(-50%,-50%) scale(1); opacity:1; pointer-events:all; }
+        .pd-close {
+            position:sticky; top:0; float:right; background:rgba(99,102,241,.15);
+            border:1px solid rgba(99,102,241,.3); color:#c7d2fe; font-size:1.4rem;
+            width:36px; height:36px; border-radius:50%; cursor:pointer;
+            display:flex; align-items:center; justify-content:center; z-index:10;
+            transition:background .2s;
+        }
+        .pd-close:hover { background:rgba(239,68,68,.3); color:#fca5a5; }
+        .pd-inner { display:grid; grid-template-columns:1fr 1fr; gap:2rem; margin-top:.5rem; }
+        @media(max-width:680px){ .pd-inner { grid-template-columns:1fr; } }
+
+        /* Gallery */
+        .pd-main-img-wrap { background:#1e293b; border-radius:14px; overflow:hidden; aspect-ratio:1; display:flex; align-items:center; justify-content:center; }
+        .pd-main-img { width:100%; height:100%; object-fit:cover; transition:opacity .25s; }
+        .pd-thumbs { display:flex; gap:.5rem; margin-top:.75rem; flex-wrap:wrap; }
+        .pd-thumb {
+            width:68px; height:68px; border-radius:10px; overflow:hidden;
+            border:2px solid transparent; cursor:pointer; transition:border-color .2s, transform .2s;
+            background:#1e293b; flex-shrink:0;
+        }
+        .pd-thumb img { width:100%; height:100%; object-fit:cover; }
+        .pd-thumb.active { border-color:#6366f1; transform:scale(1.06); }
+        .pd-thumb:hover { border-color:#818cf8; }
+
+        /* Info */
+        .pd-brand-tag {
+            display:inline-block; background:rgba(99,102,241,.2); border:1px solid rgba(99,102,241,.4);
+            color:#818cf8; font-size:.75rem; font-weight:700; padding:.2rem .7rem;
+            border-radius:20px; margin-bottom:.5rem; text-transform:uppercase; letter-spacing:.05em;
+        }
+        .pd-title { font-size:1.4rem; font-weight:800; color:#f8fafc; margin:.25rem 0 .5rem; line-height:1.3; }
+        .pd-price { font-size:1.6rem; font-weight:800; color:#6366f1; margin:.4rem 0 1rem; }
+        .pd-rating { display:flex; align-items:center; gap:.5rem; margin-bottom:.4rem; }
+        .pd-stars { color:#fbbf24; font-size:1rem; letter-spacing:.05em; }
+        .pd-rating-count { color:#64748b; font-size:.82rem; }
+
+        /* Variants in modal */
+        .pd-variant-row { margin-bottom:.75rem; }
+        .pd-variant-label { font-size:.75rem; font-weight:700; color:#64748b; text-transform:uppercase; letter-spacing:.06em; margin-bottom:.35rem; }
+        .pd-variant-pills { display:flex; gap:.4rem; flex-wrap:wrap; }
+        .pd-vpill {
+            padding:.3rem .75rem; border-radius:8px; font-size:.8rem; font-weight:600;
+            border:1.5px solid rgba(99,102,241,.3); background:rgba(99,102,241,.08); color:#94a3b8;
+            cursor:pointer; transition:all .15s;
+        }
+        .pd-vpill.active { background:rgba(99,102,241,.35); border-color:#6366f1; color:#c7d2fe; }
+        .pd-vpill:hover { border-color:#818cf8; color:#c7d2fe; }
+
+        /* Features */
+        .pd-section { margin:1rem 0; }
+        .pd-section-title { font-size:.9rem; font-weight:700; color:#94a3b8; margin-bottom:.6rem; }
+        .pd-features { list-style:none; padding:0; margin:0; display:flex; flex-direction:column; gap:.4rem; }
+        .pd-features li { font-size:.85rem; color:#cbd5e1; display:flex; gap:.5rem; align-items:flex-start; }
+        .pd-features li::before { content:"✓"; color:#4ade80; font-weight:700; flex-shrink:0; margin-top:.05rem; }
+
+        /* Actions */
+        .pd-actions { display:flex; gap:.75rem; margin-top:1.25rem; }
+        .pd-add-cart {
+            flex:1; padding:.8rem; border-radius:12px; font-weight:700; font-size:.9rem; cursor:pointer;
+            background:rgba(99,102,241,.15); border:1.5px solid #6366f1; color:#c7d2fe;
+            transition:all .2s;
+        }
+        .pd-add-cart:hover { background:rgba(99,102,241,.3); }
+        .pd-buy-now {
+            flex:1; padding:.8rem; border-radius:12px; font-weight:700; font-size:.9rem; cursor:pointer;
+            background:linear-gradient(135deg,#6366f1,#8b5cf6); border:none; color:white;
+            transition:transform .2s, box-shadow .2s;
+        }
+        .pd-buy-now:hover { transform:scale(1.03); box-shadow:0 4px 20px rgba(99,102,241,.45); }
+
+        /* Reviews */
+        .pd-reviews-section { margin-top:2rem; padding-top:1.5rem; border-top:1px solid rgba(99,102,241,.15); }
+        .pd-reviews-title { font-size:1.05rem; font-weight:700; color:#f8fafc; margin-bottom:1rem; }
+        .pd-reviews-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(240px,1fr)); gap:.85rem; }
+        .pd-review-card {
+            background:#1e293b; border:1px solid rgba(99,102,241,.15); border-radius:12px; padding:1rem;
+        }
+        .pd-review-header { display:flex; justify-content:space-between; align-items:center; margin-bottom:.4rem; }
+        .pd-reviewer { font-weight:700; font-size:.85rem; color:#e2e8f0; }
+        .pd-review-stars { color:#fbbf24; font-size:.8rem; }
+        .pd-review-date { font-size:.72rem; color:#475569; margin-bottom:.5rem; }
+        .pd-review-text { font-size:.82rem; color:#94a3b8; line-height:1.5; }
+        .pd-verified { display:inline-block; font-size:.68rem; color:#4ade80; font-weight:600; margin-top:.4rem; }
+
+        /* ── Specs Table ── */
+        .pd-specs-table { display:flex; flex-direction:column; gap:0; border-radius:10px; overflow:hidden; border:1px solid rgba(99,102,241,.15); }
+        .pd-spec-row { display:flex; gap:0; }
+        .pd-spec-row:nth-child(odd) { background:rgba(99,102,241,.06); }
+        .pd-spec-row:nth-child(even) { background:rgba(15,23,42,.5); }
+        .pd-spec-key { flex:0 0 38%; padding:.5rem .75rem; font-size:.78rem; font-weight:700; color:#64748b; border-right:1px solid rgba(99,102,241,.1); }
+        .pd-spec-val { flex:1; padding:.5rem .75rem; font-size:.78rem; color:#cbd5e1; }
+
+        /* ── Compare button in detail modal ── */
+        .pd-compare-btn {
+            width:100%; margin-top:.6rem; padding:.6rem; border-radius:10px; font-weight:700; font-size:.85rem;
+            background:rgba(245,158,11,.1); border:1.5px solid rgba(245,158,11,.4); color:#fcd34d;
+            cursor:pointer; transition:all .2s;
+        }
+        .pd-compare-btn:hover { background:rgba(245,158,11,.2); }
+        .pd-compare-btn.compared { background:rgba(74,222,128,.15); border-color:#4ade80; color:#4ade80; }
+
+        /* ── Compare Tray (bottom bar) ── */
+        .compare-tray {
+            position:fixed; bottom:0; left:50%; transform:translateX(-50%) translateY(100%);
+            width:min(98vw,820px); background:#1e293b; border:1px solid rgba(99,102,241,.35);
+            border-bottom:none; border-radius:18px 18px 0 0; padding:1rem 1.25rem;
+            display:flex; align-items:center; gap:1rem; z-index:900;
+            transition:transform .35s cubic-bezier(.34,1.56,.64,1); box-shadow:0 -4px 30px rgba(0,0,0,.4);
+        }
+        .compare-tray.visible { transform:translateX(-50%) translateY(0); }
+        .compare-tray-label { font-size:.85rem; font-weight:700; color:#94a3b8; white-space:nowrap; }
+        .compare-tray-thumbs { display:flex; gap:.5rem; flex:1; flex-wrap:wrap; }
+        .compare-tray-item { position:relative; width:52px; height:52px; border-radius:8px; overflow:visible; }
+        .compare-tray-item img { width:52px; height:52px; border-radius:8px; object-fit:cover; border:2px solid rgba(99,102,241,.4); }
+        .compare-tray-remove {
+            position:absolute; top:-6px; right:-6px; width:18px; height:18px;
+            border-radius:50%; background:#ef4444; border:none; color:white;
+            font-size:.55rem; cursor:pointer; display:flex; align-items:center; justify-content:center;
+        }
+        .compare-tray-actions { display:flex; align-items:center; gap:.6rem; }
+        #compareTrayCount { font-size:.8rem; color:#64748b; white-space:nowrap; }
+        .compare-now-btn {
+            padding:.55rem 1.1rem; background:linear-gradient(135deg,#6366f1,#8b5cf6);
+            border:none; border-radius:10px; color:white; font-weight:700; font-size:.85rem;
+            cursor:pointer; white-space:nowrap; transition:transform .15s;
+        }
+        .compare-now-btn:disabled { opacity:.45; cursor:not-allowed; }
+        .compare-now-btn:not(:disabled):hover { transform:scale(1.04); }
+        .clear-compare-btn {
+            padding:.5rem .9rem; background:rgba(239,68,68,.12); border:1px solid rgba(239,68,68,.3);
+            border-radius:10px; color:#fca5a5; font-size:.8rem; font-weight:600; cursor:pointer;
+        }
+
+        /* ── Compare Modal ── */
+        .compare-overlay { position:fixed; inset:0; background:rgba(0,0,0,.75); z-index:1200; display:none; backdrop-filter:blur(4px); }
+        .compare-overlay.open { display:block; }
+        .compare-modal {
+            position:fixed; top:50%; left:50%; transform:translate(-50%,-50%) scale(.96);
+            width:min(98vw,1100px); max-height:92vh; overflow:hidden;
+            background:#0f172a; border:1px solid rgba(99,102,241,.35); border-radius:20px;
+            z-index:1201; display:flex; flex-direction:column;
+            transition:transform .25s, opacity .25s; opacity:0; pointer-events:none;
+        }
+        .compare-modal.open { transform:translate(-50%,-50%) scale(1); opacity:1; pointer-events:all; }
+        .compare-modal-header {
+            display:flex; justify-content:space-between; align-items:center;
+            padding:1rem 1.5rem; border-bottom:1px solid rgba(99,102,241,.15); flex-shrink:0;
+        }
+        .compare-modal-header h3 { color:#f8fafc; font-size:1.1rem; font-weight:800; }
+        .compare-modal-close {
+            background:rgba(99,102,241,.15); border:1px solid rgba(99,102,241,.3); color:#c7d2fe;
+            width:34px; height:34px; border-radius:50%; font-size:1.2rem; cursor:pointer;
+            display:flex; align-items:center; justify-content:center;
+        }
+        #compareTableWrap { overflow:auto; flex:1; padding:1rem; }
+        .cmp-scroll { overflow-x:auto; }
+        .cmp-table { width:100%; border-collapse:collapse; min-width:500px; }
+        .cmp-table th, .cmp-table td { padding:.55rem .75rem; text-align:left; border-bottom:1px solid rgba(99,102,241,.1); vertical-align:top; }
+        .cmp-table th { background:#1e293b; color:#c7d2fe; font-size:.82rem; font-weight:700; position:sticky; top:0; z-index:2; }
+        .cmp-row-label { font-size:.75rem; font-weight:700; color:#64748b; background:#0f172a !important; min-width:120px; position:sticky; left:0; z-index:1; }
+        .cmp-table td { font-size:.8rem; color:#94a3b8; }
+        .cmp-table tr:nth-child(odd) td { background:rgba(99,102,241,.04); }
+        .cmp-header-cell { display:flex; flex-direction:column; gap:.3rem; align-items:center; text-align:center; }
+        .cmp-remove { background:rgba(239,68,68,.2); border:1px solid rgba(239,68,68,.3); color:#fca5a5; border-radius:6px; padding:.1rem .4rem; font-size:.7rem; cursor:pointer; align-self:flex-end; }
+        .cmp-add-cart { width:100%; padding:.5rem; background:rgba(99,102,241,.2); border:1.5px solid #6366f1; color:#c7d2fe; border-radius:8px; font-size:.78rem; font-weight:700; cursor:pointer; }
+        .cmp-add-cart:hover { background:rgba(99,102,241,.4); }
+    </style>
+
+    <!-- ── COMPARE TRAY ─────────────────────────────── -->
+    <div class="compare-tray" id="compareTray">
+        <span class="compare-tray-label">⚖️ Compare</span>
+        <div class="compare-tray-thumbs" id="compareTrayThumbs"></div>
+        <div class="compare-tray-actions">
+            <span id="compareTrayCount"></span>
+            <button class="clear-compare-btn" id="clearCompareBtn">Clear</button>
+            <button class="compare-now-btn" id="compareNowBtn" disabled>Compare Now</button>
+        </div>
+    </div>
+
+    <!-- ── COMPARE MODAL ─────────────────────────────── -->
+    <div class="compare-overlay" id="compareOverlay"></div>
+    <div class="compare-modal" id="compareModal">
+        <div class="compare-modal-header">
+            <h3>⚖️ Product Comparison</h3>
+            <button class="compare-modal-close" id="compareModalClose">&times;</button>
+        </div>
+        <div id="compareTableWrap"></div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="chatbot.js"></script>
+    <script src="app.js"></script>
+    <script src="outfit.js"></script>
+
+    <!-- ══════════════════════════════════════════════ -->
+    <!-- AI OUTFIT STUDIO MODAL                         -->
+    <!-- ══════════════════════════════════════════════ -->
+    <div class="outfit-overlay" id="outfitOverlay" onclick="closeOutfitStudio()"></div>
+    <div class="outfit-studio" id="outfitStudio">
+
+        <!-- Header -->
+        <div class="outfit-header">
+            <div class="outfit-header-left">
+                <span class="outfit-header-badge">✦ AI Powered</span>
+                <h2 class="outfit-header-title">AI Outfit Studio</h2>
+            </div>
+            <div class="outfit-header-right">
+                <div class="outfit-steps-bar">
+                    <div class="ostep active" id="ostep1"><span class="ostep-num">1</span><span class="ostep-label">Upload</span></div>
+                    <div class="ostep-line"></div>
+                    <div class="ostep" id="ostep2"><span class="ostep-num">2</span><span class="ostep-label">Body Type</span></div>
+                    <div class="ostep-line"></div>
+                    <div class="ostep" id="ostep3"><span class="ostep-num">3</span><span class="ostep-label">Results</span></div>
+                </div>
+                <button class="outfit-close-btn" onclick="closeOutfitStudio()">✕</button>
+            </div>
+        </div>
+
+        <!-- ── STEP 1: Upload + Body Type ── -->
+        <div class="outfit-step-panel" id="outfitStep1">
+            <div class="outfit-two-col">
+
+                <!-- Upload -->
+                <div class="outfit-upload-col">
+                    <div class="outfit-col-label">📷 Upload Your Photo</div>
+                    <div class="outfit-upload-zone" id="outfitUploadZone" onclick="document.getElementById('outfitPhotoInput').click()">
+                        <input type="file" id="outfitPhotoInput" accept="image/*" onchange="handleOutfitUpload(event)" style="display:none">
+                        <img class="outfit-preview-img" id="outfitPreviewImg" alt="Preview">
+                        <div id="outfitUploadPlaceholder">
+                            <div class="outfit-upload-icon">📷</div>
+                            <div class="outfit-upload-text">Drop photo here or click to browse</div>
+                            <div class="outfit-upload-sub">JPG, PNG · Your photo stays private</div>
+                        </div>
+                        <div class="outfit-upload-done" id="outfitUploadDone">
+                            <span style="color:#4ade80;font-weight:700">✓ Photo ready</span>
+                            <span style="color:#64748b;font-size:.75rem">Click to change</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Body Type -->
+                <div class="outfit-body-col">
+                    <div class="outfit-col-label">🧍 Select Body Type</div>
+                    <div class="outfit-body-grid">
+                        <div class="outfit-body-card" data-type="Slim" onclick="selectOutfitBody(this)">
+                            <div class="outfit-body-icon">🕴️</div>
+                            <div class="outfit-body-name">Slim</div>
+                            <div class="outfit-body-desc">Lean, narrow frame</div>
+                            <div class="outfit-body-check">✓</div>
+                        </div>
+                        <div class="outfit-body-card" data-type="Athletic" onclick="selectOutfitBody(this)">
+                            <div class="outfit-body-icon">🏋️</div>
+                            <div class="outfit-body-name">Athletic</div>
+                            <div class="outfit-body-desc">Muscular, broad shoulders</div>
+                            <div class="outfit-body-check">✓</div>
+                        </div>
+                        <div class="outfit-body-card" data-type="Medium" onclick="selectOutfitBody(this)">
+                            <div class="outfit-body-icon">🧍</div>
+                            <div class="outfit-body-name">Medium</div>
+                            <div class="outfit-body-desc">Balanced proportions</div>
+                            <div class="outfit-body-check">✓</div>
+                        </div>
+                        <div class="outfit-body-card" data-type="Heavy" onclick="selectOutfitBody(this)">
+                            <div class="outfit-body-icon">🧔</div>
+                            <div class="outfit-body-name">Heavy</div>
+                            <div class="outfit-body-desc">Fuller, curvier figure</div>
+                            <div class="outfit-body-check">✓</div>
+                        </div>
+                    </div>
+
+                    <div class="outfit-col-label" style="margin-top:1.25rem">🎨 Style Vibe</div>
+                    <div class="outfit-pref-chips" id="outfitPrefChips">
+                        <button class="outfit-pref-chip active" onclick="toggleOutfitPref(this)">Casual</button>
+                        <button class="outfit-pref-chip" onclick="toggleOutfitPref(this)">Formal</button>
+                        <button class="outfit-pref-chip active" onclick="toggleOutfitPref(this)">Smart-Casual</button>
+                        <button class="outfit-pref-chip" onclick="toggleOutfitPref(this)">Streetwear</button>
+                        <button class="outfit-pref-chip" onclick="toggleOutfitPref(this)">Minimalist</button>
+                        <button class="outfit-pref-chip" onclick="toggleOutfitPref(this)">Boho</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="outfit-step1-footer">
+                <div class="outfit-validation" id="outfitValidation">← Upload a photo and select body type to continue</div>
+                <button class="outfit-get-btn" id="outfitGetBtn" onclick="runOutfitAI()" disabled>
+                    <span>✨ Get My Outfit Recommendations</span>
+                    <span>→</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- ── STEP 2: Loading ── -->
+        <div class="outfit-step-panel" id="outfitStep2" style="display:none">
+            <div class="outfit-loading">
+                <div class="outfit-spinner"></div>
+                <div class="outfit-loading-title">Curating your outfits…</div>
+                <div class="outfit-loading-steps">
+                    <div class="outfit-ls" id="ols1"><div class="outfit-ls-dot"></div><span>Analysing your photo</span></div>
+                    <div class="outfit-ls" id="ols2"><div class="outfit-ls-dot"></div><span>Detecting style profile</span></div>
+                    <div class="outfit-ls" id="ols3"><div class="outfit-ls-dot"></div><span>Matching body type patterns</span></div>
+                    <div class="outfit-ls" id="ols4"><div class="outfit-ls-dot"></div><span>Curating outfit picks</span></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ── STEP 3: Results ── -->
+        <div class="outfit-step-panel" id="outfitStep3" style="display:none">
+            <!-- AI Advice -->
+            <div class="outfit-ai-card">
+                <div class="outfit-ai-icon">✦</div>
+                <div>
+                    <div class="outfit-ai-label">ShopHub AI · Style Analysis for <span id="outfitBodyLabel">—</span></div>
+                    <div class="outfit-ai-text" id="outfitAiText">Loading…</div>
+                </div>
+            </div>
+
+            <!-- Filter bar -->
+            <div class="outfit-result-bar">
+                <div class="outfit-result-count" id="outfitResultCount">0 pieces curated</div>
+                <div class="outfit-result-filters">
+                    <button class="outfit-filter active" onclick="filterOutfits('all',this)">All</button>
+                    <button class="outfit-filter" onclick="filterOutfits('tops',this)">Tops</button>
+                    <button class="outfit-filter" onclick="filterOutfits('bottoms',this)">Bottoms</button>
+                    <button class="outfit-filter" onclick="filterOutfits('outerwear',this)">Outerwear</button>
+                    <button class="outfit-filter" onclick="filterOutfits('dresses',this)">Dresses</button>
+                    <button class="outfit-filter" onclick="filterOutfits('accessories',this)">Accessories</button>
+                </div>
+                <button class="outfit-retake-btn" onclick="resetOutfitStudio()">← Redo</button>
+            </div>
+
+            <!-- Products grid -->
+            <div class="outfit-products-grid" id="outfitProductsGrid"></div>
+        </div>
+    </div>
+
+</body>
+</html>
